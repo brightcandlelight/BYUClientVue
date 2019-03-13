@@ -1,0 +1,133 @@
+<template>
+    <div class="item">
+        <a v-bind:href="item.url">
+            <img v-bind:src="item.url" class="image" v-bind:alt="item.url">
+        </a>
+        <br>
+        <div v-if="item.username">
+            User: {{item.username}}<br>
+        </div>
+        Date: {{item.date}}<br>
+        {{item.likes}} Like<span v-if="item.likes !== 1">s</span> &nbsp;
+        <span v-if="loggedIn">
+            <div v-if="item.categories">
+                Categories: <input type="text" name="categories" v-bind:value="item.categories.join(' ')" @change="updateCategories" /> <br>
+            </div>
+            <span v-if="item.likedByUser">
+                <button type="submit" class="btn liked" v-on:click="toggleLike(item)">Unlike</button>
+            </span>
+            <span v-else>
+                <button type="submit" class="btn unliked" v-on:click="toggleLike(item)">Like</button>
+            </span>
+            <!--<button v-if="updateDataFunc === 'getUserAccount'">Delete</button>-->
+        </span>
+        <button v-on:click="downloadWithAxios(item.url, item.filename)">Download</button>
+    </div>
+</template>
+
+<script>
+    import Vue from 'vue';
+
+    import axios from 'axios';
+
+    import VueCookies from 'vue-cookies'
+    Vue.use(VueCookies);
+
+    export default {
+        name: "pictureTemplate",
+        props: {
+            item: Object,
+            updateDataFunc: String
+        },
+        computed: {
+            loggedIn: function() {
+                return this.$store.getters.loggedIn;
+            }
+        },
+        methods: {
+            updateCategories(e) {
+                const categories = e.currentTarget.value.split(" ");
+                this.saveImageInfo({filename: this.item.filename, categories}, this.item);
+            },
+            forceFileDownload(response, filename) {
+                const url = window.URL.createObjectURL(new Blob([response.data]));
+                const link = document.createElement('a');
+                link.href = url;
+                link.setAttribute('download', filename); //or any other extension
+                document.body.appendChild(link);
+                link.click();
+            },
+            downloadWithAxios(url,filename) {
+                axios({
+                    method: 'get',
+                    url: url,
+                    responseType: 'arraybuffer'
+                }).then(response => {
+                    this.forceFileDownload(response, filename);
+                }).catch(() => {
+                    // eslint-disable-next-line no-console
+                    console.log('error occured');
+                })
+            },
+            toggleLike: function(item) {
+                if(item.likedByUser) {
+                    this.unlikePhoto(item)
+                } else {
+                    this.likePhoto(item)
+                }
+            },
+            likePhoto: function(item) {
+                this.saveImageInfo({filename: item.filename, likedByUser: true}, item);
+            },
+            unlikePhoto: function(item) {
+                this.saveImageInfo({filename: item.filename, likedByUser: false}, item);
+            },
+            saveImageInfo: function(imageInfo, item) {
+                // eslint-disable-next-line no-console
+                console.log(imageInfo);
+
+                return axios.put("http://localhost:3000/api/saveimage", imageInfo, {
+                    headers: {
+                        id: VueCookies.get("id")
+                    }
+                }).then((res) => {
+                    //context.dispatch('setUserInfo',data.data);
+                    // eslint-disable-next-line no-console
+                    console.log(res.data);
+                    item.likedByUser = res.data.likedByUser;
+                    item.likes = res.data.likes;
+                    item.categories = res.data.categories;
+                    this.$forceUpdate();
+                });
+            }
+        },
+
+    }
+</script>
+
+<style scoped>
+    .image {
+        height:auto;
+        width: auto;
+        max-height: 190px;
+        max-width: 225px;
+        object-fit: contain;
+        margin: auto;
+        display: block;
+    }
+
+    .item {
+        border-style: solid;
+        border-color: darkblue;
+        padding: 10px;
+    }
+    .button {
+        -webkit-appearance: button;
+        -moz-appearance: button;
+        appearance: button;
+
+        text-decoration: none;
+        color: initial;
+        padding: 5px;
+    }
+</style>
