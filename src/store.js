@@ -13,7 +13,7 @@ export default new Vuex.Store({
     state: {
         loggedIn: false,
         qrCodeHtml: "",
-        imageData: {},
+        imageData: [],
         userInfo: {username:""},
         sortBy: "",
         uploadStatus: ""
