@@ -54,8 +54,6 @@ export default new Vuex.Store({
         },
         login(context, onSuccessStrFunc) {
             context.commit('setQRCodeHtml', "");
-            // eslint-disable-next-line no-console
-            console.log(BACKEND_URL+"/api/login");
             return axios.post(BACKEND_URL+"/api/login", null,{
                 headers: { id: VueCookies.get("id") }
             }).then((response) =>{
@@ -83,15 +81,20 @@ export default new Vuex.Store({
                 if (!data) {
                     context.dispatch('login');
                 } else {
-                    context.dispatch('sortImages',data.data);
+                    context.dispatch('sortImages', {data: data.data, isFeed: false});
                 }
             });
         },
-        sortImages(context, data) {
+        sortImages(context, dataObj) {
             let sortBy = this.state.sortBy.toLowerCase();
+            const data = dataObj.data;
             if (!sortBy) {
                 context.commit('sortBy', "Date");
-                return;
+                if (!dataObj.isFeed) {
+                    return;
+                } else {
+                    sortBy = "date";
+                }
             }
             let list = {};
             for (let image of data.images || []) {
@@ -143,7 +146,7 @@ export default new Vuex.Store({
                 if (!data) {
                     context.commit('setImageData',{});
                 } else {
-                    context.dispatch('sortImages', data.data);
+                    context.dispatch('sortImages', {data: data.data, isFeed:true});
                 }
             });
         },
