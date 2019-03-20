@@ -88,8 +88,8 @@ export default new Vuex.Store({
         sortImages(context, data) {
             let sortBy = this.state.sortBy.toLowerCase();
             if (!sortBy) {
-                sortBy = "Date";
-                context.commit('sortBy', sortBy);
+                context.commit('sortBy', "Date");
+                return;
             }
             let list = {};
             for (let image of data.images || []) {
@@ -112,6 +112,10 @@ export default new Vuex.Store({
             // Ok, now change the object into an array so we can sort it
             const arrayList = [];
             for (const key of Object.keys(list)) {
+                list[key] = list[key].sort(function(a, b) {
+                    return a.fulldate > b.fulldate ? -1 : (a.fulldate < b.fulldate ? 1 : 0);
+                });
+
                 arrayList.push({key, value:list[key]});
             }
 

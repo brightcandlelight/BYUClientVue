@@ -10,9 +10,11 @@
             </div>
         </div>
         <div v-else>
-            <h3>Scan the QR code to login</h3>
-            <div v-html="qrCodeHtml"></div>
+            <center>
+            <h2>Scan the QR code to login</h2>
+            <div v-html="qrCodeHtml" style="zoom:2;"></div>
             <a :href="$router.resolve({name: 'UserAccount'}).href" class="button">Continue</a>
+            </center>
         </div>
     </div>
 </template>
