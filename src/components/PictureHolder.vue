@@ -31,7 +31,7 @@
         name: "PictureHolder",
         components: {PictureTemplate},
         props: {
-            imageList: Object,
+            imageList: Array,
             updateDataFunc: String
         },
         created: function() {
