@@ -5,9 +5,9 @@ import axios from 'axios';
 
 import VueCookies from 'vue-cookies'
 Vue.use(VueCookies);
-
-
 Vue.use(Vuex);
+
+const BACKEND_URL = "http://localhost:3000";
 
 export default new Vuex.Store({
     state: {
@@ -36,10 +36,6 @@ export default new Vuex.Store({
             state.qrCodeHtml = status;
         },
         sortBy (state, status) {
-            if (status) {
-                VueCookies.config('7d');
-                VueCookies.set('sortBy', status);
-            }
             state.sortBy = status;
         },
         setImageData (state, status) {
@@ -53,9 +49,12 @@ export default new Vuex.Store({
         }
     },
     actions: {
+        setSortBy(context, status) {
+            context.commit('sortBy', status);
+        },
         login(context, onSuccessStrFunc) {
             context.commit('setQRCodeHtml', "");
-            return axios.post("http://localhost:3000/api/login", null,{
+            return axios.post(BACKEND_URL+"/api/login", null,{
                 headers: { id: VueCookies.get("id") }
             }).then((response) =>{
                 // set default config
@@ -76,7 +75,7 @@ export default new Vuex.Store({
             })
         },
         getUserAccount(context) {
-            return axios.get("http://localhost:3000/api/getuseraccount", {
+            return axios.get(BACKEND_URL+"/api/getuseraccount", {
                 headers: {id: VueCookies.get("id")}
             }).then((data) => {
                 if (!data) {
@@ -89,13 +88,12 @@ export default new Vuex.Store({
         sortImages(context, data) {
             let sortBy = this.state.sortBy.toLowerCase();
             if (!sortBy) {
-                const cookie = VueCookies.get("sortBy");
-                sortBy = cookie ? cookie.toLowerCase() : "";
-                context.commit('sortBy', cookie);
+                sortBy = "Date";
+                context.commit('sortBy', sortBy);
             }
             let list = {};
             for (let image of data.images || []) {
-                image.url = "http://localhost:3000/"+image.url;
+                image.url = BACKEND_URL+"/"+image.url;
                 const key = image[sortBy] !== undefined ? image[sortBy] : "undefined";
                 if (sortBy.indexOf("category") === 0) {
                     for (const key1 of image.categories || []) {
@@ -111,12 +109,29 @@ export default new Vuex.Store({
                     list[key].push(image);
                 }
             }
-            data.images = list;
+            // Ok, now change the object into an array so we can sort it
+            const arrayList = [];
+            for (const key of Object.keys(list)) {
+                arrayList.push({key, value:list[key]});
+            }
+
+            // If result is
+            if (sortBy !== "category") {
+                arrayList.sort((a, b) => {
+                    return a.key > b.key ? -1 : 1;
+                });
+            } else {
+                arrayList.sort((a, b) => {
+                    return a.key > b.key ? 1 : -1;
+                });
+            }
+
+            data.images = arrayList;
             context.commit('setImageData',data.images);
             context.commit('setUserInfo',data.userInfo);
         },
         getFeed(context) {
-            return axios.get("http://localhost:3000/api/getfeed", {
+            return axios.get(BACKEND_URL+"/api/getfeed", {
                 headers: {id: VueCookies.get("id")}
             }).then((data) => {
                 if (!data) {
@@ -130,7 +145,7 @@ export default new Vuex.Store({
             // eslint-disable-next-line no-console
             console.log(fileObj.file.name);
 
-            return axios.post("http://localhost:3000/api/uploadphoto", fileObj.image, {
+            return axios.post(BACKEND_URL+"/api/uploadphoto", fileObj.image, {
                 headers: {
                     id: VueCookies.get("id"),
                     'Content-Type': 'multipart/form-data',
@@ -144,7 +159,7 @@ export default new Vuex.Store({
             // eslint-disable-next-line no-console
             console.log(userInfo);
 
-            return axios.put("http://localhost:3000/api/saveuserinfo", userInfo, {
+            return axios.put(BACKEND_URL+"/api/saveuserinfo", userInfo, {
                 headers: {
                     id: VueCookies.get("id")
                 }
@@ -155,7 +170,7 @@ export default new Vuex.Store({
             });
         },
         logout(context) {
-            return axios.post("http://localhost:3000/api/logout", null, {
+            return axios.post(BACKEND_URL+"/api/logout", null, {
                 headers: {id: VueCookies.get("id") }
             }).then(() => {
                 // Clear the cookies and set loggedIn to false

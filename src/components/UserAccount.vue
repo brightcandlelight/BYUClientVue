@@ -46,7 +46,9 @@
         },
         methods: {
             saveUserName: function(e) {
-                this.$store.dispatch('saveUserInfo', {username: e.currentTarget.value});
+                if (e.currentTarget.value) {
+                    this.$store.dispatch('saveUserInfo', {username: e.currentTarget.value});
+                }
             }
         }
     }

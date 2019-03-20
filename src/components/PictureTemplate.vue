@@ -86,7 +86,8 @@
                 // eslint-disable-next-line no-console
                 console.log(imageInfo);
 
-                return axios.put("http://localhost:3000/api/saveimage", imageInfo, {
+                const BACKEND_URL = "http://localhost:3000";
+                return axios.put(BACKEND_URL+"/api/saveimage", imageInfo, {
                     headers: {
                         id: VueCookies.get("id")
                     }

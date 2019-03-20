@@ -40,11 +40,6 @@ export default new Router({
             path: '/logout',
             name: 'Logout',
             component: UploadPhoto
-        },
-        {
-            path: '/createaccount',
-            name: 'CreateAccount',
-            component: UploadPhoto
         }
     ]
 })

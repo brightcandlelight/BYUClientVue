@@ -12,11 +12,11 @@
         <br>
         <br>
         <div class="allHolder">
-            <div class="outsideHolder" v-for="(category, key) in imageList" v-bind:key="key">
-                <button class="underline collapsible">{{sortByL}} {{key}} {{sortByR}}</button>
+            <div class="outsideHolder" v-for="item in imageList" v-bind:key="item.key">
+                <button class="underline collapsible">{{sortByL}} {{item.key}} {{sortByR}}</button>
                 <div class="content">
                     <div class="holder">
-                        <PictureTemplate v-for="item in category" v-bind:item="item" v-bind:key="item.filename" class="padded" v-bind:updateDataFunc="updateDataFunc"></PictureTemplate>
+                        <PictureTemplate v-for="imageList in item.value" v-bind:item="imageList" v-bind:key="imageList.filename" class="padded" v-bind:updateDataFunc="updateDataFunc"></PictureTemplate>
                     </div>
                 </div>
             </div>
@@ -33,6 +33,10 @@
         props: {
             imageList: Object,
             updateDataFunc: String
+        },
+        created: function() {
+            this.$store.dispatch('login', "getUserAccount");
+            this.$store.dispatch('setSortBy', "");
         },
         updated() {
             let coll = document.getElementsByClassName("collapsible");
