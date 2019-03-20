@@ -30,7 +30,7 @@
             }
         },
         created: function() {
-            this.$store.dispatch('login', "getUserAccount");
+            this.$store.dispatch('login', "");
         },
         computed: {
             qrCodeHtml: function() {

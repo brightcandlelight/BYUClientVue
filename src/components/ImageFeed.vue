@@ -16,7 +16,6 @@
             }
         },
         created: function() {
-            this.$store.dispatch('getFeed');
         },
         computed: {
             loggedIn: function() {

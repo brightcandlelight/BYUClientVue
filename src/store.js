@@ -66,7 +66,7 @@ export default new Vuex.Store({
                     context.commit('setQRCodeHtml', response.data);
                 }
 
-                if (response.headers.isloggedin === "true" && onSuccessStrFunc) {
+                if ((response.headers.isloggedin === "true" && onSuccessStrFunc) || onSuccessStrFunc === "getFeed") {
                     context.dispatch(onSuccessStrFunc);
                 }
                 // eslint-disable-next-line no-console
@@ -90,7 +90,7 @@ export default new Vuex.Store({
             const data = dataObj.data;
             if (!sortBy) {
                 context.commit('sortBy', "Date");
-                return;
+                sortBy = "date";
             }
             let list = {};
             for (let image of data.images || []) {
