@@ -7,7 +7,7 @@ import VueCookies from 'vue-cookies'
 Vue.use(VueCookies);
 Vue.use(Vuex);
 
-const BACKEND_URL = "http://localhost:3000";
+const BACKEND_URL = "https://letsauth.org/api";
 
 export default new Vuex.Store({
     state: {
@@ -54,6 +54,8 @@ export default new Vuex.Store({
         },
         login(context, onSuccessStrFunc) {
             context.commit('setQRCodeHtml', "");
+            // eslint-disable-next-line no-console
+            console.log(BACKEND_URL+"/api/login");
             return axios.post(BACKEND_URL+"/api/login", null,{
                 headers: { id: VueCookies.get("id") }
             }).then((response) =>{
