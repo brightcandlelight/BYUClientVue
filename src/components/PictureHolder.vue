@@ -35,7 +35,7 @@
             updateDataFunc: String
         },
         created: function() {
-            this.$store.dispatch('login', this.props.updateDataFunc);
+            this.$store.dispatch('login', this.updateDataFunc);
             this.$store.dispatch('setSortBy', "");
         },
         updated() {

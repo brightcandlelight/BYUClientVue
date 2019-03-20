@@ -81,7 +81,7 @@ export default new Vuex.Store({
                 if (!data) {
                     context.dispatch('login');
                 } else {
-                    context.dispatch('sortImages', {data: data.data, isFeed: false});
+                    context.dispatch('sortImages', {data: data.data});
                 }
             });
         },
@@ -90,11 +90,7 @@ export default new Vuex.Store({
             const data = dataObj.data;
             if (!sortBy) {
                 context.commit('sortBy', "Date");
-                if (!dataObj.isFeed) {
-                    return;
-                } else {
-                    sortBy = "date";
-                }
+                return;
             }
             let list = {};
             for (let image of data.images || []) {
@@ -146,7 +142,7 @@ export default new Vuex.Store({
                 if (!data) {
                     context.commit('setImageData',{});
                 } else {
-                    context.dispatch('sortImages', {data: data.data, isFeed:true});
+                    context.dispatch('sortImages', {data: data.data});
                 }
             });
         },
