@@ -12,7 +12,8 @@
         <div v-else>
             <center>
             <h2>Scan the QR code to login</h2>
-            <div v-html="qrCodeHtml" style="zoom:2;"></div>
+            <div v-html="qrCodeHtml.html" style="zoom:2;"></div>
+                <div><a v-bind:href="qrCodeHtml.url" target="_blank">Bypass</a></div>
             <a :href="$router.resolve({name: 'UserAccount'}).href" class="button">Continue</a>
             </center>
         </div>
