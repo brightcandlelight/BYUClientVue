@@ -13,13 +13,14 @@
             <div v-if="item.categories">
                 Categories: <input type="text" name="categories" v-bind:value="item.categories.join(' ')" @change="updateCategories" /> <br>
             </div>
-            <span v-if="item.likedByUser">
-                <button type="submit" class="btn liked" v-on:click="toggleLike(item)">Unlike</button>
+            <span v-if="item.isCurrentWeek">
+                <span v-if="item.likedByUser">
+                    <button type="submit" class="btn liked" v-on:click="toggleLike(item)">Unlike</button>
+                </span>
+                <span v-else>
+                    <button type="submit" class="btn unliked" v-on:click="toggleLike(item)">Like</button>
+                </span>
             </span>
-            <span v-else>
-                <button type="submit" class="btn unliked" v-on:click="toggleLike(item)">Like</button>
-            </span>
-            <!--<button v-if="updateDataFunc === 'getUserAccount'">Delete</button>-->
         </span>
         <button v-on:click="downloadWithAxios(item.url, item.filename)">Download</button>
     </div>
@@ -87,6 +88,7 @@
                 console.log(imageInfo);
 
                 const BACKEND_URL = "http://localhost:3000";
+                //const BACKEND_URL = "http://localhost:8445";
                 return axios.put(BACKEND_URL+"/api/saveimage", imageInfo, {
                     headers: {
                         id: VueCookies.get("id")

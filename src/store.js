@@ -8,6 +8,7 @@ Vue.use(VueCookies);
 Vue.use(Vuex);
 
 const BACKEND_URL = "https://letsauth.org/api";
+//const BACKEND_URL = "http://localhost:8445";
 
 export default new Vuex.Store({
     state: {
@@ -186,6 +187,25 @@ export default new Vuex.Store({
                 console.log("clear cookies");
                 context.dispatch('login');
             });
+        },
+        createAccount(context, params) {
+            context.commit('setQRCodeHtml', "");
+            return axios.post(BACKEND_URL+"/api/createaccount", params,{
+                headers: { id: VueCookies.get("id") }
+            }).then((response) =>{
+                // set default config
+                if (response.headers.id) {
+                    VueCookies.config('7d');
+                    VueCookies.set('id', response.headers.id);
+                }
+                if (response.data) {
+                    context.commit('setQRCodeHtml', response.data);
+                }
+
+                // eslint-disable-next-line no-console
+                console.log(response.headers.isloggedin === "true");
+                context.commit('setLoggedIn', response.headers.isloggedin === "true");
+            })
         }
     }
 });
