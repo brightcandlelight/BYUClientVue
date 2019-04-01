@@ -5,7 +5,10 @@
                 <li><router-link to="/">Home</router-link></li>
                 <li><router-link :to="{name: 'UserAccount'}">User Account</router-link></li>
                 <li v-if="loggedIn"><a v-on:click="logout" style="" href="/">Logout</a></li>
-                <li v-else><router-link :to="{name: 'UserAccount'}">Login</router-link></li>
+                <ul v-else>
+                    <li><router-link :to="{name: 'UserAccount'}">Login</router-link></li>
+                    <li><router-link :to="{name: 'CreateAccount'}">Create Account</router-link></li>
+                </ul>
             </ul>
         </nav>
     </div>

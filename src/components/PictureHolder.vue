@@ -7,7 +7,6 @@
             <option>Category</option>
             <option>Date</option>
             <option>Week</option>
-            <option>Likes</option>
         </select>
         <br>
         <br>
