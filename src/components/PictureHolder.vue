@@ -34,7 +34,7 @@
             updateDataFunc: String
         },
         created: function() {
-            this.$store.dispatch('login', this.updateDataFunc);
+            this.$store.dispatch('login', {onSuccessStrFunc: this.updateDataFunc});
             this.$store.dispatch('setSortBy', "");
         },
         updated() {

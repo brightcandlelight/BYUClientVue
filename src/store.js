@@ -53,9 +53,10 @@ export default new Vuex.Store({
         setSortBy(context, status) {
             context.commit('sortBy', status);
         },
-        login(context, onSuccessStrFunc) {
+        login(context, options) {
             context.commit('setQRCodeHtml', "");
-            return axios.post(BACKEND_URL+"/api/login", null,{
+            const onSuccessStrFunc = options ? options.onSuccessStrFunc : undefined;
+            return axios.post(BACKEND_URL+"/api/login", options ? options.params : null,{
                 headers: { id: VueCookies.get("id") }
             }).then((response) =>{
                 // set default config
@@ -206,6 +207,13 @@ export default new Vuex.Store({
                 console.log(response.headers.isloggedin === "true");
                 context.commit('setLoggedIn', response.headers.isloggedin === "true");
             })
-        }
+        },
+        phoneHack(context, body) {
+            return axios.post(BACKEND_URL+"/api/loginFromPhone", body,{
+            }).then((data) => {
+                // eslint-disable-next-line no-console
+                console.log(data);
+            });
+        },
     }
 });

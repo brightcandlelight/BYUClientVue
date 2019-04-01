@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import UserAccount from '@/components/UserAccount'
+import Phone from '@/components/Phone'
 import ImageFeed from '@/components/ImageFeed'
 import CreateAccount from '@/components/CreateAccount'
 //import UploadPhotoOld from '@/components/UploadPhotoOld'
@@ -11,6 +12,11 @@ Vue.use(Router);
 export default new Router({
     mode: 'history',
     routes: [
+        {
+            path: '/phone',
+            name: 'Phone',
+            component: Phone
+        },
         {
             path: '/useraccount',
             name: 'UserAccount',
