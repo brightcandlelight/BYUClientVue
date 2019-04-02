@@ -14,6 +14,7 @@
             <br>
             <div>
                 <br>
+                <div>Note: If you have already uploaded a photo today, this one will replace your current photo for today.</div><br>
                 <button class="button" v-on:click="uploadPhoto()" type="button">Submit</button>
                 <!-- Type=button removes the refresh -->
                 <br>

@@ -9,28 +9,45 @@
         </div>
         Date: {{item.date}}<br>
         {{item.likes}} Like<span v-if="item.likes !== 1">s</span> &nbsp;
-        <span v-if="loggedIn">
-            <div v-if="item.categories">
-                Categories: <input type="text" name="categories" v-bind:value="item.categories.join(' ')" @change="updateCategories" /> <br>
-            </div>
-            <span v-if="item.isCurrentWeek">
-                <span v-if="item.likedByUser">
-                    <button type="submit" class="btn liked" v-on:click="toggleLike(item)">Unlike</button>
-                </span>
-                <span v-else>
-                    <button type="submit" class="btn unliked" v-on:click="toggleLike(item)">Like</button>
-                </span>
+
+        <span v-if="loggedIn && isAdmin">
+            Nominate:
+            <span v-if="item.nominated">
+                <button type="submit" class="btn liked" v-on:click="toggleNominate(item)">Unnominate "{{item.nominated}}"</button>
+            </span>
+            <span v-else>
+                <input type="text" helptext="topic" v-bind:value="item.nominate" @change="toggleNominate(item,$event)">
+            </span>
+            Win:
+            <span v-if="item.winners">
+                <button type="submit" class="btn liked" v-on:click="toggleWinners(item)">Unwin "{{item.winners}}"</button>
+            </span>
+            <span v-else>
+                <input type="text" helptext="topic" v-bind:value="item.winners" @change="toggleWinners(item,$event)">
             </span>
         </span>
+        <span v-else>
+            <span v-if="item.winners">
+                <b>Award: {{item.winners}}&nbsp;&nbsp;</b>
+            </span>
+        </span>
+        <span v-if="loggedIn && item.isCurrentWeek">
+            <span v-if="item.likedByUser">
+                <button type="submit" class="btn liked" v-on:click="toggleLike(item)">Unlike</button>
+            </span>
+            <span v-else>
+                <button type="submit" class="btn unliked" v-on:click="toggleLike(item)">Like</button>
+            </span>
+        </span>
+
         <button v-on:click="downloadWithAxios(item.url, item.filename)">Download</button>
     </div>
 </template>
 
 <script>
+    import moment from 'moment';
     import Vue from 'vue';
-
     import axios from 'axios';
-
     import VueCookies from 'vue-cookies'
     Vue.use(VueCookies);
 
@@ -43,6 +60,9 @@
         computed: {
             loggedIn: function() {
                 return this.$store.getters.loggedIn;
+            },
+            isAdmin: function() {
+                return this.$store.getters.isAdmin;
             }
         },
         methods: {
@@ -77,6 +97,21 @@
                     this.likePhoto(item)
                 }
             },
+            toggleNominate: function(item,e) {
+                if(item.nominated) {
+                    item.nominated = "";
+                } else {
+                    this.saveImageInfo({filename: item.filename, nominated: e.currentTarget.value, nominatedDate: moment().format("YYYY/MM/DD")}, item);
+                }
+                this.$forceUpdate();
+            },
+            toggleWinners: function(item,e) {
+                if(item.winners) {
+                    item.winners = "";
+                } else {
+                    this.saveImageInfo({filename: item.filename, winners: e.currentTarget.value, winnersDate: moment().format("YYYY/MM/DD")}, item);
+                }
+            },
             likePhoto: function(item) {
                 this.saveImageInfo({filename: item.filename, likedByUser: true}, item);
             },
@@ -99,7 +134,8 @@
                     console.log(res.data);
                     item.likedByUser = res.data.likedByUser;
                     item.likes = res.data.likes;
-                    item.categories = res.data.categories;
+                    item.nominated = res.data.nominated || "";
+                    item.winners = res.data.winners || "";
                     this.$forceUpdate();
                 });
             }

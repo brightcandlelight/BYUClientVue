@@ -1,13 +1,15 @@
 <template>
     <div>
-        Sort By:
-        <select v-model="sortBy">
-            <option disabled value="">Please select one</option>
-            <option v-if="updateDataFunc !== 'getUserAccount'">Username</option>
-            <option>Category</option>
-            <option>Date</option>
-            <option>Week</option>
-        </select>
+        <div v-if="isAdmin && loggedIn">
+            <select v-model="sortBy">
+                <option disabled value="">Please select one</option>
+                <option v-if="updateDataFunc !== 'getUserAccount'">Username</option>
+                <option>Nominated</option>
+                <option>Winners</option>
+                <option>Date</option>
+                <option>Week</option>
+            </select>
+        </div>
         <br>
         <br>
         <div class="allHolder">
@@ -54,6 +56,12 @@
             }
         },
         computed: {
+            isAdmin: function() {
+                return this.$store.getters.isAdmin;
+            },
+            loggedIn: function() {
+                return this.$store.getters.loggedIn;
+            },
             sortBy: {
                 get: function() {
                     let sortBy = this.$store.getters.sortBy;

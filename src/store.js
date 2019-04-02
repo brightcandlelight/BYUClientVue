@@ -17,7 +17,10 @@ export default new Vuex.Store({
         imageData: [],
         userInfo: {username:""},
         sortBy: "",
-        uploadStatus: ""
+        uploadStatus: "",
+        isAdmin: false,
+        totalPoints: 0,
+        imagePointData: []
     },
     getters: {
         loggedIn: state => state.loggedIn,
@@ -27,7 +30,10 @@ export default new Vuex.Store({
         },
         imageData: state => state.imageData,
         userInfo: state => state.userInfo,
-        uploadStatus: state => state.uploadStatus
+        uploadStatus: state => state.uploadStatus,
+        isAdmin: state => state.isAdmin,
+        totalPoints: state => state.totalPoints,
+        imagePointData: state => state.imagePointData
     },
     mutations: {
         setLoggedIn (state, status) {
@@ -47,6 +53,15 @@ export default new Vuex.Store({
         },
         setUserInfo(state,status) {
             state.userInfo = status;
+        },
+        setIsAdmin(state,status) {
+            state.isAdmin = status;
+        },
+        setTotalPoints(state,status) {
+            state.totalPoints = status;
+        },
+        setImagePointData(state,status) {
+            state.imagePointData = status;
         }
     },
     actions: {
@@ -83,33 +98,31 @@ export default new Vuex.Store({
                 if (!data) {
                     context.dispatch('login');
                 } else {
+                    context.commit('isAdmin', data.data.isAdmin || false);
                     context.dispatch('sortImages', {data: data.data});
                 }
             });
         },
         sortImages(context, dataObj) {
             let sortBy = this.state.sortBy.toLowerCase();
+            let totalPoints = 0;
+            const imagePointData = [];
             const data = dataObj.data;
             if (!sortBy) {
-                context.commit('sortBy', "Date");
-                sortBy = "date";
+                context.commit('sortBy', "Week");
+                sortBy = "week";
             }
             let list = {};
             for (let image of data.images || []) {
                 image.url = BACKEND_URL+"/"+image.url;
                 const key = image[sortBy] !== undefined ? image[sortBy] : "undefined";
-                if (sortBy.indexOf("category") === 0) {
-                    for (const key1 of image.categories || []) {
-                        if (!list[key1]) {
-                            list[key1] = [];
-                        }
-                        list[key1].push(image);
-                    }
-                } else {
-                    if (!list[key]) {
-                        list[key] = [];
-                    }
-                    list[key].push(image);
+                if (!list[key]) {
+                    list[key] = [];
+                }
+                list[key].push(image);
+                if (image.points) {
+                    totalPoints += image.points || 0;
+                    imagePointData.push(image);
                 }
             }
             // Ok, now change the object into an array so we can sort it
@@ -134,6 +147,8 @@ export default new Vuex.Store({
             }
 
             data.images = arrayList;
+            context.commit('setImagePointData',imagePointData);
+            context.commit('setTotalPoints',totalPoints);
             context.commit('setImageData',data.images);
             context.commit('setUserInfo',data.userInfo);
         },

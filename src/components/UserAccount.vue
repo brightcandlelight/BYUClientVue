@@ -4,9 +4,28 @@
             <h2>User Account</h2>
             Username: <input type="text" name="username" v-bind:value="username" @change="saveUserName" /> &nbsp;
             <hr>
-            <div><h3>My Photos</h3>
-                <router-link :to="{name: 'UploadPhoto'}" class="button">Upload Photo</router-link><br><br>
+            <div><h2>My Photos</h2>
+                <router-link :to="{name: 'UploadPhoto'}" class="button">Upload Photo</router-link><br>
                 <PictureHolder v-bind:imageList="imageData" v-bind:updateDataFunc="'getUserAccount'"></PictureHolder>
+            </div><br>
+            <hr>
+            <div><h2>My Points</h2>
+                <table>
+                    <tr>
+                        <th width="5px">Date</th>
+                        <th>Reason</th>
+                        <th>Amount ($)</th>
+                    </tr>
+                    <tr v-for="item in imagePointData" v-bind:key="item.key">
+                        <td>{{item.winnersDate}}</td>
+                        <td>{{item.winners}}</td>
+                        <td>${{item.points}}</td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">Total:</td>
+                        <td>${{totalPoints}}</td>
+                    </tr>
+                </table>
             </div>
         </div>
         <div v-else>
@@ -43,9 +62,15 @@
             imageData: function() {
                 return this.$store.getters.imageData;
             },
+            imagePointData: function() {
+                return this.$store.getters.imagePointData;
+            },
             username: function() {
                 return this.$store.getters.userInfo ? this.$store.getters.userInfo.username : "";
-            }
+            },
+            totalPoints: function() {
+                return this.$store.getters.totalPoints;
+            },
         },
         methods: {
             saveUserName: function(e) {
@@ -69,5 +94,8 @@
     }
     .page {
         padding-bottom: 30px;
+    }
+    table, th, td {
+        border: 1px solid black;
     }
 </style>
