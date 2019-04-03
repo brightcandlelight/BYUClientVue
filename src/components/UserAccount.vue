@@ -49,10 +49,10 @@
         </div>
         <div v-else>
             <center>
-            <h2>Scan the QR code to login</h2>
-            <div v-html="qrCodeHtml.html" style="zoom:2;"></div>
-                {{qrCodeHtml.url}}
-            <a :href="$router.resolve({name: 'UserAccount'}).href" class="button">Continue</a>
+                <h2>Scan the QR code to login</h2>
+                <div v-html="qrCodeHtml.html" style="zoom:2;"></div>
+                <div style="font-size:3px;">{{qrCodeHtml.url}}</div><br>
+                <a :href="$router.resolve({name: 'UserAccount'}).href" class="button">Continue</a>
             </center>
         </div>
     </div>
