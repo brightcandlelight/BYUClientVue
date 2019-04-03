@@ -20,7 +20,9 @@ export default new Vuex.Store({
         uploadStatus: "",
         isAdmin: false,
         totalPoints: 0,
-        imagePointData: []
+        imagePointData: [],
+        adminUserData: [],
+        error: ""
     },
     getters: {
         loggedIn: state => state.loggedIn,
@@ -33,7 +35,9 @@ export default new Vuex.Store({
         uploadStatus: state => state.uploadStatus,
         isAdmin: state => state.isAdmin,
         totalPoints: state => state.totalPoints,
-        imagePointData: state => state.imagePointData
+        imagePointData: state => state.imagePointData,
+        adminUserData: state => state.adminUserData,
+        error: state => state.error
     },
     mutations: {
         setLoggedIn (state, status) {
@@ -62,6 +66,12 @@ export default new Vuex.Store({
         },
         setImagePointData(state,status) {
             state.imagePointData = status;
+        },
+        setAdminUserData(state,status) {
+            state.adminUserData = status;
+        },
+        setError(state,status) {
+            state.error = status;
         }
     },
     actions: {
@@ -98,7 +108,14 @@ export default new Vuex.Store({
                 if (!data) {
                     context.dispatch('login');
                 } else {
-                    context.commit('isAdmin', data.data.isAdmin || false);
+                    if (data.data.isAdmin) {
+                        axios.get(BACKEND_URL+"/api/getAllUsersObj", {
+                            headers: {id: VueCookies.get("id")}
+                        }).then((data) => {
+                            context.commit('setAdminUserData', data.data || []);
+                        });
+                    }
+                    context.commit('setIsAdmin', data.data.isAdmin || false);
                     context.dispatch('sortImages', {data: data.data});
                 }
             });
@@ -199,16 +216,20 @@ export default new Vuex.Store({
                 VueCookies.config('7d');
                 VueCookies.set('id', "");
                 context.commit('setLoggedIn',false);
-                // eslint-disable-next-line no-console
-                console.log("clear cookies");
                 context.dispatch('login');
             });
         },
         createAccount(context, params) {
             context.commit('setQRCodeHtml', "");
-            return axios.post(BACKEND_URL+"/api/createaccount", params,{
-                headers: { id: VueCookies.get("id") }
-            }).then((response) =>{
+
+            return axios.post(BACKEND_URL + "/api/createaccount", params, {
+                headers: {id: VueCookies.get("id")}
+            }).then((response) => {
+                if (response.data.error) {
+                    context.commit('setError', response.data.error || "Backend Error");
+                    return;
+                }
+
                 // set default config
                 if (response.headers.id) {
                     VueCookies.config('7d');

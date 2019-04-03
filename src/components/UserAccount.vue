@@ -22,8 +22,27 @@
                         <td>${{item.points}}</td>
                     </tr>
                     <tr>
-                        <td colspan="2">Total:</td>
-                        <td>${{totalPoints}}</td>
+                        <td colspan="2"><b>Total:</b></td>
+                        <td><b>${{totalPoints}}</b></td>
+                    </tr>
+                </table>
+            </div>
+            <div v-if="isAdmin">
+                <br>
+                <hr>
+                <h2>All Users and Points</h2>
+                <table>
+                    <tr>
+                        <th>Username</th>
+                        <th>Email</th>
+                        <th>Registration Code</th>
+                        <th>Points</th>
+                    </tr>
+                    <tr v-for="item in adminUserData" v-bind:key="item.certId">
+                        <td>{{item.username}}</td>
+                        <td>{{item.email}}</td>
+                        <td>{{item.register}}</td>
+                        <td>${{item.points}}</td>
                     </tr>
                 </table>
             </div>
@@ -59,6 +78,9 @@
             loggedIn: function() {
                 return this.$store.getters.loggedIn;
             },
+            isAdmin: function() {
+                return this.$store.getters.isAdmin;
+            },
             imageData: function() {
                 return this.$store.getters.imageData;
             },
@@ -71,6 +93,9 @@
             totalPoints: function() {
                 return this.$store.getters.totalPoints;
             },
+            adminUserData: function() {
+                return this.$store.getters.adminUserData;
+            }
         },
         methods: {
             saveUserName: function(e) {

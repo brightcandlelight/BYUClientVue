@@ -1,6 +1,7 @@
 <template>
     <div>
         <div v-if="isAdmin && loggedIn">
+            <br>
             <select v-model="sortBy">
                 <option disabled value="">Please select one</option>
                 <option v-if="updateDataFunc !== 'getUserAccount'">Username</option>
@@ -9,9 +10,8 @@
                 <option>Date</option>
                 <option>Week</option>
             </select>
+            <br>
         </div>
-        <br>
-        <br>
         <div class="allHolder">
             <div class="outsideHolder" v-for="item in imageList" v-bind:key="item.key">
                 <button class="underline collapsible">{{sortByL}} {{item.key}} {{sortByR}}</button>

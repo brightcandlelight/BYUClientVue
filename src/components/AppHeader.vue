@@ -4,7 +4,7 @@
             <ul id="menu">
                 <li><router-link to="/">All Photos</router-link></li>
                 <li><router-link :to="{name: 'UserAccount'}">My Photos</router-link></li>
-                <li v-if="loggedIn"><a v-on:click="logout" style="" href="/">Logout</a></li>
+                <li v-if="loggedIn"><a v-on:click="logout" style="" href="#">Logout</a></li>
                 <ul v-else>
                     <li><router-link :to="{name: 'UserAccount'}">Login</router-link></li>
                     <li><router-link :to="{name: 'CreateAccount'}">Create Account</router-link></li>

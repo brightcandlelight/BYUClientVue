@@ -1,7 +1,7 @@
 <template>
     <form>
         Info: <input type="text" name="username" v-bind:value="info" required @change="saveInfo" /> <br><br>
-        Id: <input type="text" name="register" v-bind:value="id" required @change="saveId"/> <br><br>
+        certId: <input type="text" name="register" v-bind:value="id" required @change="saveId"/> <br><br>
 
         <button class="button" v-on:click="login()" type="button">Login</button>
     </form>
