@@ -5,21 +5,19 @@
             <div v-if="uploadStatus">{{uploadStatus}}<br></div>
             <div v-if="!image">
                 <h2>Select an image</h2>
-                <input type="file" @change="onFileChange">
+                <input style="margin-left:70px;" type="file" @change="onFileChange">
             </div>
             <div v-else>
-                <img :src="image" />
+                <img :src="image" /><br>
                 <button @click="removeImage">Remove image</button>
             </div>
             <br>
             <div>
                 <br>
-                <div>Note: If you have already uploaded a photo today, this one will replace your current photo for today.</div><br>
+                <div>Note: If you have already uploaded a photo today, <br>this one will replace your current photo for today.</div><br>
                 <button class="button" v-on:click="uploadPhoto()" type="button">Submit</button>
                 <!-- Type=button removes the refresh -->
-                <br>
-                <br>
-                <router-link :to="{name: 'UserAccount'}" class="button">Back</router-link>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<router-link :to="{name: 'UserAccount'}" class="button">Back</router-link>
             </div>
         </form>
     </div>
