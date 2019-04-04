@@ -49,10 +49,13 @@
         </div>
         <div v-else>
             <center>
-                <h2>Scan the QR code to login</h2>
-                <div v-html="qrCodeHtml.html" style="zoom:2;"></div>
-                <div style="font-size:3px;">{{qrCodeHtml.url}}</div><br>
-                <a :href="$router.resolve({name: 'UserAccount'}).href" class="button">Continue</a>
+                <div class="black contents">
+                    <h2>Scan the QR code to login</h2>
+                    <div class="contents" v-html="qrCodeHtml.html" style="zoom:2; margin-bottom:-10px;"></div>
+                    <div style="height:0px;font-size:1px;">&nbsp;</div>
+                    <div class="contents" style="font-size:3px;">{{qrCodeHtml.url}}</div><br>
+                    <a :href="$router.resolve({name: 'UserAccount'}).href" class="button">Continue</a><br><br>
+                </div>
             </center>
         </div>
     </div>
@@ -108,6 +111,13 @@
 </script>
 
 <style scoped>
+    .black {
+        border: 1px solid black;
+    }
+    .contents {
+        display: inline-block !important;
+        margin: 6px;
+    }
     .button {
         -webkit-appearance: button;
         -moz-appearance: button;
