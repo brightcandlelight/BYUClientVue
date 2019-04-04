@@ -1,13 +1,19 @@
 <template>
     <div id="useraccount" class="page">
         <div v-if="loggedIn">
-            <h2>User Account</h2>
+            <div v-if="!isAdmin">
+                <h2>User Account</h2>
+            </div>
+            <div v-else>
+                <h2>Admin Account</h2>
+            </div>
             Username: <input type="text" name="username" v-bind:value="username" @change="saveUserName" /> &nbsp;
             <hr>
             <div><h2>My Photos</h2>
                 <router-link :to="{name: 'UploadPhoto'}" class="button">Upload Photo</router-link><br>
                 <PictureHolder v-bind:imageList="imageData" v-bind:updateDataFunc="'getUserAccount'"></PictureHolder>
             </div><br>
+            <div v-if="!isAdmin">
             <hr>
             <div><h2>My Points</h2>
                 <table>
@@ -26,6 +32,7 @@
                         <td><b>${{totalPoints}}</b></td>
                     </tr>
                 </table>
+            </div>
             </div>
             <div v-if="isAdmin">
                 <br>
