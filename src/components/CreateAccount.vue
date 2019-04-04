@@ -5,9 +5,13 @@
         </div>
         <div v-else>
             <div style="color:red;">{{error}}</div>
-            <h3>Create Account</h3>
             <form>
                 <table>
+                    <tr>
+                        <td>
+                            <h3>Create Account</h3>
+                        </td>
+                    </tr>
                     <tr>
                         <td>Username:</td>
                         <td><input type="text" class="stepOne" name="username" v-bind:value="username" required @change="saveUserName" /> <br></td>
