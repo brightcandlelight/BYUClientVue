@@ -4,12 +4,12 @@
         <form enctype="multipart/form-data">
             <div class="black contents">
             <div class="contents" v-if="uploadStatus">{{uploadStatus}}<br></div>
-            <div class="contents" v-if="!image">
                 <h2>Select an image</h2>
+                <div class="contents" v-if="!image">
                 <input style="margin-left:70px;" type="file" @change="onFileChange">
             </div>
             <div class="contents" v-else>
-                <img :src="image" style="margin-top:10px;"/><br>
+                <img :src="image"/><br>
                 <button @click="removeImage">Remove image</button>
             </div>
             <br>
