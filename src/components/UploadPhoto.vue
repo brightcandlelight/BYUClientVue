@@ -2,22 +2,24 @@
     <div id="app" class="page" v-if="loggedIn">
         <!--UPLOAD-->
         <form enctype="multipart/form-data">
-            <div v-if="uploadStatus">{{uploadStatus}}<br></div>
-            <div v-if="!image">
+            <div class="black contents">
+            <div class="contents" v-if="uploadStatus">{{uploadStatus}}<br></div>
+            <div class="contents" v-if="!image">
                 <h2>Select an image</h2>
                 <input style="margin-left:70px;" type="file" @change="onFileChange">
             </div>
-            <div v-else>
-                <img :src="image" /><br>
+            <div class="contents" v-else>
+                <img :src="image" style="margin-top:10px;"/><br>
                 <button @click="removeImage">Remove image</button>
             </div>
             <br>
-            <div>
+            <div class="contents">
                 <br>
-                <div>Note: If you have already uploaded a photo today, <br>this one will replace your current photo for today.</div><br>
+                <div class="contents">Note: If you have already uploaded a photo today, <br>this one will replace your current photo for today.</div><br>
                 <button class="button" v-on:click="uploadPhoto()" type="button">Submit</button>
                 <!-- Type=button removes the refresh -->
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<router-link :to="{name: 'UserAccount'}" class="button">Back</router-link>
+            </div>
             </div>
         </form>
     </div>
@@ -89,6 +91,13 @@
 </script>
 
 <style scoped>
+    .contents {
+        display: inline-block !important;
+        margin: 6px;
+    }
+    .black {
+        border: 1px solid black;
+    }
     .button {
         -webkit-appearance: button;
         -moz-appearance: button;
