@@ -4,33 +4,35 @@
             <img v-bind:src="item.url" class="image" v-bind:alt="item.url">
         </a>
         <br>
-        <div v-if="item.username">
+        <!--<div v-if="item.username">
             User: {{item.username}}<br>
-        </div>
+        </div>-->
         Date: {{item.date}}<br>
-        {{item.likes}} Like<span v-if="item.likes !== 1">s</span> &nbsp;
-
         <span v-if="loggedIn && isAdmin">
-            Nominate:
+
             <span v-if="item.nominated">
                 <button type="submit" class="btn liked" v-on:click="toggleNominate(item)">Unnominate "{{item.nominated}}"</button>
             </span>
-            <span v-else>
+            <span v-else>Nominate:
                 <input type="text" helptext="topic" v-bind:value="item.nominate" @change="toggleNominate(item,$event)">
             </span>
-            Win:
+
             <span v-if="item.winners">
                 <button type="submit" class="btn liked" v-on:click="toggleWinners(item)">Unwin "{{item.winners}}"</button>
             </span>
-            <span v-else>
+            <span v-else><br><center>Win:
                 <input type="text" helptext="topic" v-bind:value="item.winners" @change="toggleWinners(item,$event)">
+                </center>
             </span>
+            <br>
         </span>
         <span v-else>
             <span v-if="item.winners">
                 <b>Award: {{item.winners}}&nbsp;&nbsp;</b>
             </span>
         </span>
+        <center>
+        {{item.likes}} Like<span v-if="item.likes !== 1">s</span> &nbsp;
         <span v-if="loggedIn && item.isCurrentWeek">
             <span v-if="item.likedByUser">
                 <button type="submit" class="btn liked" v-on:click="toggleLike(item)">Unlike</button>
@@ -41,6 +43,7 @@
         </span>
 
         <button v-on:click="downloadWithAxios(item.url, item.filename)">Download</button>
+        </center>
     </div>
 </template>
 

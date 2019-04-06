@@ -1,7 +1,6 @@
 <template>
     <div>
         <div v-if="isAdmin && loggedIn">
-            <br>
             <select v-model="sortBy">
                 <option disabled value="">Please select one</option>
                 <option v-if="updateDataFunc !== 'getUserAccount'">Username</option>
