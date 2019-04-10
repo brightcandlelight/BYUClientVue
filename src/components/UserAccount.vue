@@ -60,7 +60,7 @@
                     <h2>Scan the QR code to login</h2>
                     <div class="contents" v-html="qrCodeHtml.html" style="zoom:2; margin-bottom:-10px;"></div>
                     <div style="height:0px;font-size:1px;">&nbsp;</div>
-                    <div class="contents" style="font-size:3px;">{{qrCodeHtml.url}}</div><br>
+                    <a :href="qrCodeHtml.url" style="font-size:10px;" target="_blank">Use Phone Mockup</a><br><br>
                     <a :href="$router.resolve({name: 'UserAccount'}).href" class="button">Continue</a><br><br>
                 </div>
             </center>

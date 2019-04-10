@@ -32,7 +32,7 @@
                                 <br>
                                 Scan QR code with app:
                                 <div v-html="qrCodeHtml.html" style="zoom:2;"></div>
-                                <div style="font-size:3px;">{{qrCodeHtml.url}}</div><br>
+                                <a :href="qrCodeHtml.url" style="font-size:10px;" target="_blank">Use Phone Mockup</a><br><br>
                                 <button class="button" v-on:click="createAccount()" type="button">Submit</button>
                             </div>
                         </td>
