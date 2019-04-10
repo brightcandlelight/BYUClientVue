@@ -11,16 +11,16 @@
         <span v-if="loggedIn && isAdmin">
 
             <span v-if="item.nominated">
-                <button type="submit" class="btn liked" v-on:click="toggleNominate(item)">Unnominate "{{item.nominated}}"</button>
+                <button type="submit" class="btn liked" v-on:click="toggleNominate(item)">Remove nomination: "{{item.nominated}}"</button>
             </span>
             <span v-else>Nominate:
                 <input type="text" helptext="topic" v-bind:value="item.nominate" @change="toggleNominate(item,$event)">
             </span>
 
             <span v-if="item.winners">
-                <button type="submit" class="btn liked" v-on:click="toggleWinners(item)">Unwin "{{item.winners}}"</button>
+                <button type="submit" class="btn liked" v-on:click="toggleWinners(item)">Remove award: "{{item.winners}}"</button>
             </span>
-            <span v-else><br><center>Win:
+            <span v-else><br><center>Award:
                 <input type="text" helptext="topic" v-bind:value="item.winners" @change="toggleWinners(item,$event)">
                 </center>
             </span>

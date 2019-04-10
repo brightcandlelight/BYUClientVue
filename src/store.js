@@ -245,11 +245,13 @@ export default new Vuex.Store({
             })
         },
         phoneHack(context, body) {
-            return axios.post(BACKEND_URL+"/api/loginFromPhone", body,{
-            }).then((data) => {
-                // eslint-disable-next-line no-console
-                console.log(data);
+            return axios.post(BACKEND_URL + "/api/loginFromPhone", body, {}).then((response) => {
+                if (response.data) {
+                    context.commit('setError', response.data || "Backend Error");
+                }
+            }).catch(error => {
+                context.commit('setError', error.message || "Backend Error");
             });
-        },
+       },
     }
 });

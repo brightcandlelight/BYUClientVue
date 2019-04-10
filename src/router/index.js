@@ -15,7 +15,8 @@ export default new Router({
         {
             path: '/phone',
             name: 'Phone',
-            component: Phone
+            component: Phone,
+            props: (route) => ({ info: route.query.info })
         },
         {
             path: '/useraccount',
