@@ -31,7 +31,6 @@
                 <b>Award: {{item.winners}}&nbsp;&nbsp;</b>
             </span>
         </span>
-        <center>
         {{item.likes}} Like<span v-if="item.likes !== 1">s</span> &nbsp;
         <span v-if="loggedIn && item.isCurrentWeek">
             <span v-if="item.likedByUser">
@@ -43,7 +42,6 @@
         </span>
 
         <button v-on:click="downloadWithAxios(item.url, item.filename)">Download</button>
-        </center>
     </div>
 </template>
 
